@@ -66,7 +66,7 @@ architecture test_bench of thunderbird_fsm_tb is
 	signal w_RL : std_logic_vector(1 downto 0) := "00";
 	signal w_clk : std_logic := '0';
 	signal w_lights : std_logic_vector(5 downto 0) := "000000";
-	constant clk_period : time := 10 ns;
+	constant k_clk_period : time := 10 ns;
 begin
 	-- Instantiate Unit Under Test (UUT)
 	uut: thunderbird_fsm port map (
@@ -85,26 +85,39 @@ begin
 	clk_proc : process
 	begin
 		w_clk <= '0';
-        wait for clk_period/2;
+        wait for k_clk_period/2;
 		w_clk <= '1';
-		wait for clk_period/2;
+		wait for k_clk_period/2;
 	end process;
 	-- Simulation process
-	sim_process: process
-	begin
-	    w_RL <= "00";
-		wait for clk_period;
-		  assert w_lights = "000000" report "stop fails" severity failure;		
-		  
-		  
+	sim_proc: process
+	begin		
+		w_RL <= "10";
+		wait for k_clk_period*1;
+		  assert w_lights = "000001" report "left 1 fails" severity failure;
+		wait for k_clk_period*1;
+		  assert w_lights = "000011" report "left 2 fails" severity failure;
+		wait for k_clk_period*1;
+		  assert w_lights = "000111" report "left 3 fails" severity failure;
+		wait for k_clk_period*1;
+		  assert w_lights = "000000" report "full left fails" severity failure;
+		w_RL <= "00";
+		wait for k_clk_period*1;
+		  assert w_lights = "000000" report "stops fails" severity failure;
         w_RL <= "01";
-		wait for clk_period;
-		  assert w_lights = "111000" report "right 3 fails" severity failure;
-		wait for clk_period;
-		  assert w_lights = "000000" report "all right fails" severity failure;
+		wait for k_clk_period*1;
+		  assert w_lights = "001000" report "1st right fails" severity failure;
+		wait for k_clk_period*1;
+		  assert w_lights = "011000" report "2nd right fails" severity failure;
+		wait for k_clk_period*1;
+		  assert w_lights = "111000" report "3rd right fails" severity failure;
+		wait for k_clk_period*1;
+		  assert w_lights = "000000" report "full right fails" severity failure;
 		w_RL <= "11";
-		wait for clk_period;
-		  assert w_lights = "111111" report "hazards fail" severity failure;
+		wait for k_clk_period*1;
+		  assert w_lights = "111111" report "flashes1 fail" severity failure;
+		wait for k_clk_period*1;
+		  assert w_lights = "000000" report "flashes2 fail" severity failure;
 		wait;
 	end process;
 end test_bench;
