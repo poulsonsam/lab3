@@ -115,7 +115,8 @@ architecture thunderbird_fsm_arch of thunderbird_fsm is
 
 -- CONSTANTS ------------------------------------------------------------------
  
-	   signal f_q,f_q_next: std_logic_vector(7 downto 0):="1000000";
+	  signal f_q : std_logic_vector(7 downto 0) := "10000000";
+      signal f_q_next : std_logic_vector(7 downto 0) := "10000000";
   
 begin
 
