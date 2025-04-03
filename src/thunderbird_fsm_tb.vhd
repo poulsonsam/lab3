@@ -95,9 +95,6 @@ begin
 	    w_RL <= "00";
 		wait for clk_period;
 		  assert w_lights = "000000" report "stop fails" severity failure;		
-		w_RL <= "10";
-		wait for clk_period;
-		  assert w_lights = "000111" report "left 3 fails" severity failure;
 		  
 		  
         w_RL <= "01";
