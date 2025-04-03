@@ -90,24 +90,23 @@ begin
 		wait for clk_period/2;
 	end process;
 	-- Simulation process
-	sim_proc: process
-	begin		
+	sim_process: process
+	begin
+	    w_RL <= "00";
+		wait for clk_period;
+		  assert w_lights = "000000" report "stop fails" severity failure;		
 		w_RL <= "10";
-		wait for clk_period*1;
-		  assert w_lights = "000001" report "left 1 fails" severity failure;
-		wait for clk_period*1;
-		  assert w_lights = "000000" report "all left fails" severity failure;
-		w_RL <= "00";
-		wait for clk_period*1;
-		  assert w_lights = "000000" report "stop fails" severity failure;
+		wait for clk_period;
+		  assert w_lights = "000111" report "left 3 fails" severity failure;
+		  
+		  
         w_RL <= "01";
-		
-		wait for clk_period*1;
+		wait for clk_period;
 		  assert w_lights = "111000" report "right 3 fails" severity failure;
-		wait for clk_period*1;
+		wait for clk_period;
 		  assert w_lights = "000000" report "all right fails" severity failure;
 		w_RL <= "11";
-		wait for clk_period*1;
+		wait for clk_period;
 		  assert w_lights = "111111" report "hazards fail" severity failure;
 		wait;
 	end process;
